@@ -24,7 +24,12 @@ interface AcademyContentSet {
 // Content is deliberately accurate to what the real backend does today: no
 // withdrawal lock on the emergency fund (unlike earlier BabaSika prototypes),
 // mocked bank/PFA providers, PIN-confirmed contributions only.
-export const academyContent: Record<Language, AcademyContentSet> = {
+//
+// Only English and Pidgin are written out here - Yorùbá/Hausa/Igbo cover
+// headline-level copy only (see translations.ts), so getAcademyContent()
+// below falls back to English for this deeper module/Q&A content in those
+// languages rather than duplicating it.
+const content: Partial<Record<Language, AcademyContentSet>> = {
   en: {
     basics: [
       {
@@ -214,3 +219,7 @@ export const academyContent: Record<Language, AcademyContentSet> = {
     ],
   },
 };
+
+export function getAcademyContent(language: Language): AcademyContentSet {
+  return content[language] ?? content.en!;
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { WhatsAppHint } from "./WhatsAppHint";
 
 export function Hero() {
   const { t } = useLanguage();
@@ -36,6 +37,7 @@ export function Hero() {
           {t("hero.cta.demo")}
         </Link>
       </div>
+      <WhatsAppHint />
 
       <div className="mx-auto mt-10 flex max-w-2xl flex-wrap items-center justify-center gap-3 text-sm text-muted">
         <Badge>{t("hero.badge.noApp")}</Badge>

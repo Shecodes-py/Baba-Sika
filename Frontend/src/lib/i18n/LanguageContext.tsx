@@ -2,9 +2,10 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { type Language, type TranslationKey, translations } from "./translations";
+import { LANGUAGES, type Language, type TranslationKey, translations } from "./translations";
 
 const STORAGE_KEY = "babasika:language";
+const LANGUAGE_CODES = new Set<string>(LANGUAGES.map((l) => l.code));
 
 interface LanguageContextValue {
   language: Language;
@@ -22,9 +23,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // lazy useState initializer, to keep the first client render matching
     // the server-rendered HTML and avoid a hydration mismatch).
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "en" || stored === "pcm") {
+    if (stored && LANGUAGE_CODES.has(stored)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLanguageState(stored);
+      setLanguageState(stored as Language);
     }
   }, []);
 
@@ -34,7 +35,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: TranslationKey) => translations[language][key] ?? translations.en[key] ?? key,
+    (key: TranslationKey) => {
+      // Yorùbá/Hausa/Igbo only cover headline-level keys (see translations.ts) -
+      // anything missing there falls back to English rather than showing blank.
+      const dictionary = translations[language] as Partial<Record<TranslationKey, string>>;
+      return dictionary[key] ?? translations.en[key] ?? key;
+    },
     [language],
   );
 

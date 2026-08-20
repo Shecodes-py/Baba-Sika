@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { academyContent, type AskEntry } from "@/lib/academyContent";
+import { getAcademyContent, type AskEntry } from "@/lib/academyContent";
 import type { Language } from "@/lib/i18n/translations";
 
 interface ChatMessage {
@@ -38,7 +38,7 @@ export function AskBabaSika() {
 
 function AskBabaSikaConversation({ language }: { language: Language }) {
   const { t } = useLanguage();
-  const entries = academyContent[language].ask;
+  const entries = getAcademyContent(language).ask;
 
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     { id: "greeting", role: "bot", text: t("academy.ask.greeting") },

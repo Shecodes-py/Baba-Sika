@@ -1,8 +1,11 @@
-export type Language = "en" | "pcm";
+export type Language = "en" | "pcm" | "yo" | "ha" | "ig";
 
 export const LANGUAGES: { code: Language; label: string }[] = [
   { code: "en", label: "English" },
   { code: "pcm", label: "Pidgin" },
+  { code: "yo", label: "Yorùbá" },
+  { code: "ha", label: "Hausa" },
+  { code: "ig", label: "Igbo" },
 ];
 
 export const translations = {
@@ -11,6 +14,7 @@ export const translations = {
     "nav.academy": "BabaSika Academy",
     "nav.demo": "Try the demo",
     "nav.startWhatsapp": "Start on WhatsApp",
+    "whatsapp.sandboxHint": "First time? WhatsApp opens with a join code prefilled — just hit send, then say hi to BabaSika.",
 
     "hero.eyebrow": "Pension for everybody",
     "hero.title": "Every payment, a step toward your future.",
@@ -64,6 +68,10 @@ export const translations = {
     "dash.activity": "Recent activity",
     "dash.activity.empty": "No contributions yet — they'll show up here once you start saving.",
     "dash.split": "Split ratio",
+    "dash.withdrawal": "Withdrawal",
+    "dash.simulateSale": "Simulate a sale",
+    "dash.withdrawFromEmergency": "Withdraw from emergency",
+    "dash.withdraw.empty": "Nothing to withdraw yet.",
 
     "academy.eyebrow": "BabaSika AI financial coach",
     "academy.title": "Learn, understand & plan your money.",
@@ -87,6 +95,7 @@ export const translations = {
     "nav.academy": "BabaSika Academy",
     "nav.demo": "Try the demo",
     "nav.startWhatsapp": "Start for WhatsApp",
+    "whatsapp.sandboxHint": "First time? WhatsApp go open with join code already typed — just press send, then greet BabaSika.",
 
     "hero.eyebrow": "Pension for everybody",
     "hero.title": "Every kobo you make, na step to your future.",
@@ -140,6 +149,10 @@ export const translations = {
     "dash.activity": "Wetin don happen recently",
     "dash.activity.empty": "Nothing dey here yet — once you start save, e go show for here.",
     "dash.split": "How e dey split",
+    "dash.withdrawal": "Withdrawal",
+    "dash.simulateSale": "Simulate a sale",
+    "dash.withdrawFromEmergency": "Comot from emergency",
+    "dash.withdraw.empty": "Nothing dey to comot yet.",
 
     "academy.eyebrow": "BabaSika AI financial coach",
     "academy.title": "Learn, understand & plan your money.",
@@ -157,6 +170,67 @@ export const translations = {
     "academy.ask.placeholder": "Ask me: \"Why 40/60?\" or \"How I go start?\"",
     "academy.ask.fallback": "Good question! I no get answer for that one yet — try one of the questions wey dey below, or ask BabaSika direct for WhatsApp.",
     "academy.ask.thinking": "BabaSika dey type…",
+  },
+
+  // Yorùbá/Hausa/Igbo intentionally only cover headline-level copy (nav,
+  // hero, section titles) - not the full page. Everything else falls back
+  // to English via useLanguage()'s t() lookup.
+  yo: {
+    "nav.howItWorks": "Bí ó ṣe ń ṣiṣẹ́",
+    "nav.academy": "BabaSika Academy",
+    "nav.demo": "Wo àpẹẹrẹ",
+    "nav.startWhatsapp": "Bẹ̀rẹ̀ lórí WhatsApp",
+    "hero.eyebrow": "Ifẹ̀yìntì fún gbogbo ènìyàn",
+    "hero.title": "Owó tí o rí lónìí, ìgbésẹ̀ kan sí ọjọ́ ọ̀la rẹ.",
+    "hero.subtitle": "BabaSika ń yí owó òòjọ́ rẹ padà sí àṣà ìfowópamọ́ — láìsí fọ́ọ̀mù, láìsí ohun èlò láti gbà. Kàn bá wa sọ̀rọ̀ lórí WhatsApp.",
+    "hero.cta.whatsapp": "Bẹ̀rẹ̀ lórí WhatsApp",
+    "hero.cta.demo": "Wo àpẹẹrẹ",
+    "split.title": "Gbogbo owó tí o fi sínú, a ń pín in láifọwọ́kàn",
+    "split.subtitle": "Ìdá 40 wà nítòsí fún pàjáwìrì. Ìdá 60 ń dàgbà fún ìfẹ̀yìntì.",
+    "how.title": "Bí BabaSika ṣe ń ṣiṣẹ́",
+    "how.subtitle": "Ìgbésẹ̀ mẹ́ta, gbogbo rẹ̀ nínú WhatsApp.",
+    "academy.eyebrow": "Olùkọ́ni owó BabaSika",
+    "academy.title": "Kọ́, yeye, kí o sì ṣètò owó rẹ.",
+    "academy.subtitle": "Ìmọ̀ owó ní èdè tí ó rọrùn.",
+    "dash.greeting": "Káàbọ̀ padà",
+  },
+  ha: {
+    "nav.howItWorks": "Yadda yake aiki",
+    "nav.academy": "BabaSika Academy",
+    "nav.demo": "Gwada misali",
+    "nav.startWhatsapp": "Fara akan WhatsApp",
+    "hero.eyebrow": "Fansho ga kowa",
+    "hero.title": "Kowane kudi da ka samu, mataki ne zuwa makomarka.",
+    "hero.subtitle": "BabaSika na mayar da kudin shigarka na yau da kullum zuwa dabi'ar ajiya — babu fam, babu app na saukewa. Ka yi hira kawai a WhatsApp.",
+    "hero.cta.whatsapp": "Fara akan WhatsApp",
+    "hero.cta.demo": "Gwada misali",
+    "split.title": "Kowace gudummawa, ana raba ta atomatik",
+    "split.subtitle": "Kashi 40 na zama kusa don gaggawa. Kashi 60 na girma don ritaya.",
+    "how.title": "Yadda BabaSika ke aiki",
+    "how.subtitle": "Matakai uku, duk a cikin WhatsApp.",
+    "academy.eyebrow": "Malamin kudi na BabaSika",
+    "academy.title": "Koya, fahimta, kuma tsara kudinka.",
+    "academy.subtitle": "Ilimin kudi cikin sauƙaƙan harshe.",
+    "dash.greeting": "Barka da dawowa",
+  },
+  ig: {
+    "nav.howItWorks": "Otu ọ si arụ ọrụ",
+    "nav.academy": "BabaSika Academy",
+    "nav.demo": "Lee nlereanya",
+    "nav.startWhatsapp": "Malite na WhatsApp",
+    "hero.eyebrow": "Pensịnụ maka onye ọ bụla",
+    "hero.title": "Ego ọ bụla ị nwetara bụ nzọụkwụ gaa n'ọdịnihu gị.",
+    "hero.subtitle": "BabaSika na-atụgharị ego ị na-enweta kwa ụbọchị ka ọ bụrụ ọdịnaya nchekwa — enweghị fọm, enweghị ngwa iji budata. Naanị kparịta ụka na WhatsApp.",
+    "hero.cta.whatsapp": "Malite na WhatsApp",
+    "hero.cta.demo": "Lee nlereanya",
+    "split.title": "Onyinye ọ bụla, a na-ekewa ya na akpaaka",
+    "split.subtitle": "Pasent 40 na-anọ nso maka mberede. Pasent 60 na-eto maka njem ọ bụla.",
+    "how.title": "Otu BabaSika si arụ ọrụ",
+    "how.subtitle": "Nzọụkwụ atọ, ha niile dị na WhatsApp.",
+    "academy.eyebrow": "Onye nkuzi ego BabaSika",
+    "academy.title": "Mụta, ghọta, ma haziekwa ego gị.",
+    "academy.subtitle": "Mmụta ego n'asụsụ dị mfe.",
+    "dash.greeting": "Nnọọ azụ",
   },
 } as const satisfies Record<Language, Record<string, string>>;
 

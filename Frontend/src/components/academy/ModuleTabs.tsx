@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { academyContent } from "@/lib/academyContent";
+import { getAcademyContent } from "@/lib/academyContent";
 import type { TranslationKey } from "@/lib/i18n/translations";
 import { ModuleCard } from "./ModuleCard";
 import { SavingsEstimator } from "./SavingsEstimator";
@@ -16,7 +16,7 @@ const TABS: { id: "basics" | "growth" | "split"; labelKey: TranslationKey }[] = 
 export function ModuleTabs() {
   const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<"basics" | "growth" | "split">("basics");
-  const modules = academyContent[language][activeTab];
+  const modules = getAcademyContent(language)[activeTab];
 
   return (
     <div>

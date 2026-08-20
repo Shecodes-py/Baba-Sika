@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { formatDate, formatNaira } from "@/lib/format";
+import { formatNaira } from "@/lib/format";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { contributionsToActivityEntries, type ActivityEntry } from "@/lib/activity";
 import type { BankAccount, Contribution, ProgressSummary } from "@/lib/types";
 import { BalanceCard } from "./BalanceCard";
 import { SplitBar } from "./SplitBar";
@@ -14,20 +16,26 @@ import { ActivityFeed } from "./ActivityFeed";
 export function DashboardShell({
   progress,
   contributions,
+  activityEntries,
   bankAccount,
   isDemo = false,
   greetingName,
+  controls,
 }: {
   progress: ProgressSummary;
-  contributions: Contribution[];
+  /** Real API rows. Ignored if `activityEntries` is provided (used by the interactive /demo page instead). */
+  contributions?: Contribution[];
+  activityEntries?: ActivityEntry[];
   bankAccount: BankAccount | null;
   isDemo?: boolean;
   greetingName?: string;
+  controls?: ReactNode;
 }) {
   const { t } = useLanguage();
+  const entries = activityEntries ?? contributionsToActivityEntries(contributions ?? []);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-10">
+    <div className="mx-auto max-w-6xl px-6 py-10">
       {isDemo ? (
         <div className="mb-6 flex flex-col items-center gap-2 rounded-xl bg-accent-light px-4 py-3 text-center text-sm font-medium text-accent-dark sm:flex-row sm:justify-between sm:text-left">
           <span>{t("demo.banner")}</span>
@@ -41,46 +49,49 @@ export function DashboardShell({
         {t("dash.greeting")}{greetingName ? `, ${greetingName}` : ""}
       </h1>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <BalanceCard
-          label={t("dash.emergencyFund")}
-          value={formatNaira(progress.emergency_fund_balance)}
-          accent="accent"
-        />
-        <BalanceCard
-          label={t("dash.retirementFund")}
-          value={formatNaira(progress.retirement_balance)}
-          accent="brand"
-        />
-        <BalanceCard
-          label={t("dash.bankBalance")}
-          value={formatNaira(bankAccount?.last_known_balance ?? progress.bank_account_balance)}
-          footer={bankAccount?.masked_account_number ? bankAccount.masked_account_number : undefined}
-        />
-      </div>
+      <div className="mt-6 grid gap-6 lg:grid-cols-3">
+        <div className="space-y-4 lg:col-span-2">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <BalanceCard
+              label={t("dash.emergencyFund")}
+              value={formatNaira(progress.emergency_fund_balance)}
+              accent="accent"
+            />
+            <BalanceCard
+              label={t("dash.retirementFund")}
+              value={formatNaira(progress.retirement_balance)}
+              accent="brand"
+            />
+          </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <SplitBar emergencyRatio={progress.emergency_ratio} />
-        <ReadinessCard readiness={progress.retirement_readiness} />
-      </div>
+          <BalanceCard
+            label={t("dash.bankBalance")}
+            value={formatNaira(bankAccount?.last_known_balance ?? progress.bank_account_balance)}
+            footer={bankAccount?.masked_account_number ? bankAccount.masked_account_number : undefined}
+          />
 
-      <div className="mt-4">
-        <PfaStatusCard
-          preferredPfa={progress.preferred_pfa}
-          status={progress.pfa_registration_status}
-          rsaPin={progress.rsa_pin}
-        />
-      </div>
+          <SplitBar emergencyRatio={progress.emergency_ratio} />
 
-      <div className="mt-4">
-        <ActivityFeed contributions={contributions} />
-      </div>
+          {controls}
 
-      {bankAccount?.last_balance_synced_at ? (
-        <p className="mt-6 text-center text-xs text-muted">
-          Synced {formatDate(bankAccount.last_balance_synced_at)}
-        </p>
-      ) : null}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ReadinessCard readiness={progress.retirement_readiness} />
+            <PfaStatusCard
+              preferredPfa={progress.preferred_pfa}
+              status={progress.pfa_registration_status}
+              rsaPin={progress.rsa_pin}
+            />
+          </div>
+
+          {bankAccount?.last_balance_synced_at ? (
+            <p className="text-center text-xs text-muted">Synced {formatDate(bankAccount.last_balance_synced_at)}</p>
+          ) : null}
+        </div>
+
+        <div className="lg:col-span-1">
+          <ActivityFeed entries={entries} />
+        </div>
+      </div>
 
       {isDemo ? (
         <p className="mt-8 text-center text-sm text-muted">
