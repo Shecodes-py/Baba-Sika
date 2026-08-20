@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Fixed brand palette (not adaptive light/dark) - warm cream + deep green +
+   orange, matching the BabaSika brand look rather than a system-theme-driven
+   scheme. */
+:root {
+  --background: #faf3e3;
+  --surface: #fffbf3;
+  --foreground: #16261d;
+  --muted: #8a7f68;
+  --border: #e9dfc4;
+
+  --brand: #16332a;
+  --brand-dark: #0d211a;
+  --brand-light: #e3ede7;
+
+  --accent: #f0a23d;
+  --accent-dark: #d1852a;
+  --accent-light: #fbead0;
+
+  --success: #1f6d4c;
+  --danger: #b3402f;
+  --danger-light: #fbe7e2;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
+  --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-accent-light: var(--accent-light);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-danger-light: var(--danger-light);
+  --font-sans: var(--font-geist-sans);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
