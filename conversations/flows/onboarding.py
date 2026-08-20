@@ -24,6 +24,14 @@ from pensions.services import ensure_plan_scaffold, register_with_pfa
 
 logger = logging.getLogger(__name__)
 
+LANGUAGE_MENU_ORDER = [
+    ("en", "English"),
+    ("pcm", "Pidgin"),
+    ("yo", "Yorùbá"),
+    ("ha", "Hausa"),
+    ("ig", "Igbo"),
+]
+
 OCCUPATION_MENU_ORDER = [
     OccupationType.TRADER,
     OccupationType.ARTISAN,
@@ -48,6 +56,11 @@ TERMS_SUMMARY = (
 )
 
 
+def _language_menu_text() -> str:
+    lines = [f"{i}. {label}" for i, (_code, label) in enumerate(LANGUAGE_MENU_ORDER, start=1)]
+    return "Please select your preferred language:\n" + "\n".join(lines)
+
+
 def _occupation_menu_text() -> str:
     lines = [f"{i}. {choice.label}" for i, choice in enumerate(OCCUPATION_MENU_ORDER, start=1)]
     return "What best describes what you do?\n" + "\n".join(lines)
@@ -58,12 +71,34 @@ def _pfa_menu_text() -> str:
     return "Which Pension Fund Administrator (PFA) would you like your retirement savings registered with?\n" + "\n".join(lines)
 
 
+def _looks_like_rsa_pin(value: str) -> bool:
+    # No real format spec to validate against (PenCom PIN shape isn't public) -
+    # just enough of a sanity check to reject obvious junk before storing it.
+    return value.isalnum() and 6 <= len(value) <= 20
+
+
 def handle_greeting(user, session, message_log, raw_body):
     body = (
         "Welcome to BabaSika \U0001F44B - your AI-guided pension savings companion.\n\n"
-        + _occupation_menu_text()
+        + _language_menu_text()
     )
     send_message(user=user, session=session, body=body)
+    set_session_state(session, ConversationState.ONBOARDING_LANGUAGE)
+
+
+def handle_language_reply(user, session, message_log, raw_body):
+    reply = raw_body.strip()
+    if not reply.isdigit() or not (1 <= int(reply) <= len(LANGUAGE_MENU_ORDER)):
+        send_message(user=user, session=session, body="Please reply with a number from the list.\n\n" + _language_menu_text())
+        return
+
+    # Captured for later - not yet wired into WhatsApp copy (still English
+    # throughout for this pass), same "headline-only" scope as the dashboard.
+    language_code, _label = LANGUAGE_MENU_ORDER[int(reply) - 1]
+    user.preferred_language = language_code
+    user.save(update_fields=["preferred_language", "updated_at"])
+
+    send_message(user=user, session=session, body=_occupation_menu_text())
     set_session_state(session, ConversationState.ONBOARDING_OCCUPATION)
 
 
@@ -116,7 +151,44 @@ def handle_pfa_selection_reply(user, session, message_log, raw_body):
     plan.preferred_pfa = pfa_choice
     plan.save(update_fields=["preferred_pfa", "updated_at"])
 
-    send_message(user=user, session=session, body=TERMS_SUMMARY.format(pfa=pfa_choice.label))
+    send_message(
+        user=user,
+        session=session,
+        body=(
+            f"Do you already have an RSA PIN registered with {pfa_choice.label}? "
+            "Reply with your RSA PIN, or reply 0 if you need a new one created."
+        ),
+    )
+    set_session_state(session, ConversationState.ONBOARDING_PFA_LINK)
+
+
+def handle_pfa_link_reply(user, session, message_log, raw_body):
+    reply = raw_body.strip()
+    plan = ensure_plan_scaffold(user)
+
+    if reply != "0":
+        if not _looks_like_rsa_pin(reply):
+            send_message(
+                user=user,
+                session=session,
+                body="That doesn't look like a valid RSA PIN. Reply with your RSA PIN, or reply 0 for a new one.",
+            )
+            return
+        # User already has a real RSA PIN - link it directly, no mock
+        # registration call needed (pensions.services.register_with_pfa
+        # already no-ops once pfa_registration_status is REGISTERED).
+        plan.rsa_pin = reply
+        plan.pfa_registration_status = PFARegistrationStatus.REGISTERED
+        plan.pfa_registered_at = timezone.now()
+        plan.save(update_fields=["rsa_pin", "pfa_registration_status", "pfa_registered_at", "updated_at"])
+        send_message(user=user, session=session, body=f"Got it - linked to {plan.get_preferred_pfa_display()}.")
+
+    _proceed_to_consent(user, session, plan)
+
+
+def _proceed_to_consent(user, session, plan):
+    pfa_label = plan.get_preferred_pfa_display() if plan.preferred_pfa else "your chosen PFA"
+    send_message(user=user, session=session, body=TERMS_SUMMARY.format(pfa=pfa_label))
     set_session_state(session, ConversationState.ONBOARDING_CONSENT)
 
 

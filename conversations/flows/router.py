@@ -17,9 +17,11 @@ logger = logging.getLogger(__name__)
 
 _HANDLERS = {
     ConversationState.ONBOARDING_GREETING: onboarding.handle_greeting,
+    ConversationState.ONBOARDING_LANGUAGE: onboarding.handle_language_reply,
     ConversationState.ONBOARDING_OCCUPATION: onboarding.handle_occupation_reply,
     ConversationState.ONBOARDING_BANK_LINK: onboarding.handle_bank_link_retry,
     ConversationState.ONBOARDING_PFA_SELECTION: onboarding.handle_pfa_selection_reply,
+    ConversationState.ONBOARDING_PFA_LINK: onboarding.handle_pfa_link_reply,
     ConversationState.ONBOARDING_CONSENT: onboarding.handle_consent_reply,
     ConversationState.ONBOARDING_PIN_SETUP: onboarding.handle_pin_setup_reply,
     ConversationState.AWAITING_CONFIRMATION: confirmation.handle_confirmation_reply,

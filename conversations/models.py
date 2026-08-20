@@ -6,9 +6,11 @@ from babasika.base_models import TimeStampedModel, UUIDPrimaryKeyModel
 
 class ConversationState(models.TextChoices):
     ONBOARDING_GREETING = "onboarding_greeting", "Onboarding: greeting"
+    ONBOARDING_LANGUAGE = "onboarding_language", "Onboarding: language selection"
     ONBOARDING_OCCUPATION = "onboarding_occupation", "Onboarding: occupation"
     ONBOARDING_BANK_LINK = "onboarding_bank_link", "Onboarding: bank link"
     ONBOARDING_PFA_SELECTION = "onboarding_pfa_selection", "Onboarding: PFA selection"
+    ONBOARDING_PFA_LINK = "onboarding_pfa_link", "Onboarding: existing RSA PIN or new"
     ONBOARDING_CONSENT = "onboarding_consent", "Onboarding: consent"
     ONBOARDING_PIN_SETUP = "onboarding_pin_setup", "Onboarding: PIN setup"
     IDLE = "idle", "Idle"

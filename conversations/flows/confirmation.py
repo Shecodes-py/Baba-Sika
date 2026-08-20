@@ -16,6 +16,7 @@ from pensions.services import (
     PinLockedError,
     decline_pending_action,
     confirm_and_execute_pending_action,
+    get_progress_summary,
 )
 
 logger = logging.getLogger(__name__)
@@ -139,10 +140,14 @@ def handle_pin_reply(user, session, message_log, raw_body):
     pending_action.refresh_from_db()
     emergency = pending_action.contributions.filter(destination=ContributionDestination.EMERGENCY_FUND).first()
     retirement = pending_action.contributions.filter(destination=ContributionDestination.RETIREMENT_FUND).first()
+    summary = get_progress_summary(user)
     body = (
-        "Done! ✅ Contribution confirmed.\n"
+        "Done! ✅ Transfer successful.\n"
         f"₦{emergency.amount:,.2f} → Emergency fund\n"
         f"₦{retirement.amount:,.2f} → Retirement fund\n\n"
+        "📊 Updated balances:\n"
+        f"Emergency: ₦{summary['emergency_fund_balance']:,.2f}\n"
+        f"Retirement: ₦{summary['retirement_balance']:,.2f}\n\n"
         "Reply BALANCE anytime to check your progress."
     )
     send_message(user=user, session=session, body=body)
