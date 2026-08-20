@@ -7,7 +7,7 @@ import type {
   VerifyMagicLinkResponse,
 } from "./types";
 
-const API_BASE_URL = "https://baba-sika.onrender.com/api";
+const API_BASE_URL = "/api/backend";
 
 export class ApiError extends Error {
   status: number;
