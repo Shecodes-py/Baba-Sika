@@ -13,7 +13,6 @@ import { SplitBar } from "./SplitBar";
 import { ReadinessCard } from "./ReadinessCard";
 import { PfaStatusCard } from "./PfaStatusCard";
 import { RecentActivity } from "./RecentActivity";
-import { AiCoachCard } from "./AiCoachCard";
 import { ExplainMoneyModal } from "./ExplainMoneyModal";
 
 export function DashboardShell({
@@ -35,7 +34,6 @@ export function DashboardShell({
   const { t } = useLanguage();
   const [explaining, setExplaining] = useState<TransactionEntry | null>(null);
   const entries = transactions ?? transactionsFromContributions(contributions ?? []);
-  const latestEntry = entries[0] ?? null;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -55,20 +53,22 @@ export function DashboardShell({
       <div className="mt-6 space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <BalanceCard
-            label={t("dash.emergencyFund")}
+            label="Contingent"
             value={formatNaira(progress.emergency_fund_balance)}
-            accent="accent"
+            icon="⚡"
+            tone="gold"
+            subtext="Available now (after 3 months)"
           />
           <BalanceCard
-            label={t("dash.retirementFund")}
+            label="Retirement"
             value={formatNaira(progress.retirement_balance)}
-            accent="brand"
+            icon="🌳"
+            tone="forest"
+            subtext="Locked for growth"
           />
         </div>
 
         <SplitBar emergencyRatio={progress.emergency_ratio} />
-
-        <AiCoachCard latestEntry={latestEntry} onExplain={setExplaining} />
 
         {controls}
 
