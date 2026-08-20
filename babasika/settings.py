@@ -223,7 +223,7 @@ TWILIO_WHATSAPP_NUMBER = env('TWILIO_WHATSAPP_NUMBER', default='')  # e.g. '+141
 # --- BabaSika: dashboard handoff --------------------------------------------------
 # FLAG: placeholder until the deployed dashboard's real base URL is confirmed.
 
-DASHBOARD_BASE_URL = env('DASHBOARD_BASE_URL', default='https://dashboard.babasika.ng')
+DASHBOARD_BASE_URL = env('DASHBOARD_BASE_URL', default='https://baba-sika-dun.vercel.app')
 
 # The dashboard (Frontend/) calls this API cross-origin from Vercel, so its
 # origin(s) must be listed here - comma-separated in .env, e.g.

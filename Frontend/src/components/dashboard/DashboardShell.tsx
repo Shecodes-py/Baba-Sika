@@ -1,39 +1,44 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { formatNaira } from "@/lib/format";
 import { getWhatsAppLink } from "@/lib/whatsapp";
-import { contributionsToActivityEntries, type ActivityEntry } from "@/lib/activity";
+import { transactionsFromContributions, type TransactionEntry } from "@/lib/transactions";
 import type { Contribution, ProgressSummary } from "@/lib/types";
 import { BalanceCard } from "./BalanceCard";
 import { SplitBar } from "./SplitBar";
 import { ReadinessCard } from "./ReadinessCard";
 import { PfaStatusCard } from "./PfaStatusCard";
-import { ActivityFeed } from "./ActivityFeed";
+import { RecentActivity } from "./RecentActivity";
+import { AiCoachCard } from "./AiCoachCard";
+import { ExplainMoneyModal } from "./ExplainMoneyModal";
 
 export function DashboardShell({
   progress,
   contributions,
-  activityEntries,
+  transactions,
   isDemo = false,
   greetingName,
   controls,
 }: {
   progress: ProgressSummary;
-  /** Real API rows. Ignored if `activityEntries` is provided (used by the interactive /demo page instead). */
+  /** Real API rows. Ignored if `transactions` is provided (used by the interactive /demo page instead). */
   contributions?: Contribution[];
-  activityEntries?: ActivityEntry[];
+  transactions?: TransactionEntry[];
   isDemo?: boolean;
   greetingName?: string;
   controls?: ReactNode;
 }) {
   const { t } = useLanguage();
-  const entries = activityEntries ?? contributionsToActivityEntries(contributions ?? []);
+  const [explaining, setExplaining] = useState<TransactionEntry | null>(null);
+  const entries = transactions ?? transactionsFromContributions(contributions ?? []);
+  const latestEntry = entries[0] ?? null;
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
+    <div className="mx-auto max-w-4xl px-6 py-10">
       {isDemo ? (
         <div className="mb-6 flex flex-col items-center gap-2 rounded-xl bg-accent-light px-4 py-3 text-center text-sm font-medium text-accent-dark sm:flex-row sm:justify-between sm:text-left">
           <span>{t("demo.banner")}</span>
@@ -47,39 +52,36 @@ export function DashboardShell({
         {t("dash.greeting")}{greetingName ? `, ${greetingName}` : ""}
       </h1>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <div className="space-y-4 lg:col-span-2">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <BalanceCard
-              label={t("dash.emergencyFund")}
-              value={formatNaira(progress.emergency_fund_balance)}
-              accent="accent"
-            />
-            <BalanceCard
-              label={t("dash.retirementFund")}
-              value={formatNaira(progress.retirement_balance)}
-              accent="brand"
-            />
-          </div>
-
-          <SplitBar emergencyRatio={progress.emergency_ratio} />
-
-          {controls}
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ReadinessCard readiness={progress.retirement_readiness} />
-            <PfaStatusCard
-              preferredPfa={progress.preferred_pfa}
-              status={progress.pfa_registration_status}
-              rsaPin={progress.rsa_pin}
-            />
-          </div>
-
+      <div className="mt-6 space-y-5">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <BalanceCard
+            label={t("dash.emergencyFund")}
+            value={formatNaira(progress.emergency_fund_balance)}
+            accent="accent"
+          />
+          <BalanceCard
+            label={t("dash.retirementFund")}
+            value={formatNaira(progress.retirement_balance)}
+            accent="brand"
+          />
         </div>
 
-        <div className="lg:col-span-1">
-          <ActivityFeed entries={entries} />
+        <SplitBar emergencyRatio={progress.emergency_ratio} />
+
+        <AiCoachCard latestEntry={latestEntry} onExplain={setExplaining} />
+
+        {controls}
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ReadinessCard readiness={progress.retirement_readiness} />
+          <PfaStatusCard
+            preferredPfa={progress.preferred_pfa}
+            status={progress.pfa_registration_status}
+            rsaPin={progress.rsa_pin}
+          />
         </div>
+
+        <RecentActivity entries={entries} onExplain={setExplaining} />
       </div>
 
       {isDemo ? (
@@ -89,6 +91,8 @@ export function DashboardShell({
           </Link>
         </p>
       ) : null}
+
+      {explaining ? <ExplainMoneyModal entry={explaining} onClose={() => setExplaining(null)} /> : null}
     </div>
   );
 }

@@ -41,7 +41,7 @@ def issue_magic_link(user, *, requested_via: str) -> tuple[str, str]:
     raw_jwt = str(token)
     # FLAG: DASHBOARD_BASE_URL is a placeholder until the dashboard's real
     # deployed URL and expected query param name are confirmed.
-    dashboard_url = f"{settings.DASHBOARD_BASE_URL.rstrip('/')}/auth?token={raw_jwt}"
+    dashboard_url = f"{settings.DASHBOARD_BASE_URL.rstrip('/')}/dashboard?token={raw_jwt}"
     return dashboard_url, raw_jwt
 
 

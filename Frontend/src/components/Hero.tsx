@@ -44,6 +44,12 @@ export function Hero() {
             {t("hero.cta.demo")}
           </Link>
         </div>
+        <Link
+          href="/ussd"
+          className="mt-5 inline-flex items-center gap-2 font-display text-sm font-bold text-forest-100 underline-offset-4 transition-colors hover:text-amber-300 hover:underline"
+        >
+          📟 {t("hero.ussd")}
+        </Link>
         <WhatsAppHint />
 
         <div className="mx-auto mt-10 flex max-w-2xl flex-wrap items-center justify-center gap-3 text-sm font-medium text-forest-100/90">
