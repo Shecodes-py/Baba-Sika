@@ -72,6 +72,7 @@ export const translations = {
     "dash.simulateSale": "Simulate a sale",
     "dash.withdrawFromEmergency": "Withdraw from emergency",
     "dash.withdraw.empty": "Nothing to withdraw yet.",
+    "dash.gotIt": "Got it!",
 
     "academy.eyebrow": "BabaSika AI financial coach",
     "academy.title": "Learn, understand & plan your money.",
@@ -153,6 +154,7 @@ export const translations = {
     "dash.simulateSale": "Simulate a sale",
     "dash.withdrawFromEmergency": "Comot from emergency",
     "dash.withdraw.empty": "Nothing dey to comot yet.",
+    "dash.gotIt": "I don see am!",
 
     "academy.eyebrow": "BabaSika AI financial coach",
     "academy.title": "Learn, understand & plan your money.",

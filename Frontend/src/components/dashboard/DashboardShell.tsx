@@ -6,7 +6,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { formatNaira } from "@/lib/format";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { contributionsToActivityEntries, type ActivityEntry } from "@/lib/activity";
-import type { BankAccount, Contribution, ProgressSummary } from "@/lib/types";
+import type { Contribution, ProgressSummary } from "@/lib/types";
 import { BalanceCard } from "./BalanceCard";
 import { SplitBar } from "./SplitBar";
 import { ReadinessCard } from "./ReadinessCard";
@@ -17,7 +17,6 @@ export function DashboardShell({
   progress,
   contributions,
   activityEntries,
-  bankAccount,
   isDemo = false,
   greetingName,
   controls,
@@ -26,7 +25,6 @@ export function DashboardShell({
   /** Real API rows. Ignored if `activityEntries` is provided (used by the interactive /demo page instead). */
   contributions?: Contribution[];
   activityEntries?: ActivityEntry[];
-  bankAccount: BankAccount | null;
   isDemo?: boolean;
   greetingName?: string;
   controls?: ReactNode;
@@ -64,12 +62,6 @@ export function DashboardShell({
             />
           </div>
 
-          <BalanceCard
-            label={t("dash.bankBalance")}
-            value={formatNaira(bankAccount?.last_known_balance ?? progress.bank_account_balance)}
-            footer={bankAccount?.masked_account_number ? bankAccount.masked_account_number : undefined}
-          />
-
           <SplitBar emergencyRatio={progress.emergency_ratio} />
 
           {controls}
@@ -83,9 +75,6 @@ export function DashboardShell({
             />
           </div>
 
-          {bankAccount?.last_balance_synced_at ? (
-            <p className="text-center text-xs text-muted">Synced {formatDate(bankAccount.last_balance_synced_at)}</p>
-          ) : null}
         </div>
 
         <div className="lg:col-span-1">

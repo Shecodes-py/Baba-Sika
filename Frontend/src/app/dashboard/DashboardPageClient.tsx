@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ApiError, getBankAccount, getContributions, getMe, getProgressSummary, verifyMagicLink } from "@/lib/api";
-import type { BankAccount, Contribution, ProgressSummary } from "@/lib/types";
+import { ApiError, getContributions, getMe, getProgressSummary, verifyMagicLink } from "@/lib/api";
+import type { Contribution, ProgressSummary } from "@/lib/types";
 import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { DashboardSkeleton } from "@/components/dashboard/DashboardSkeleton";
 import { DashboardError, type DashboardErrorKind } from "@/components/dashboard/DashboardError";
@@ -15,7 +15,6 @@ type LoadState =
       status: "ready";
       progress: ProgressSummary;
       contributions: Contribution[];
-      bankAccount: BankAccount | null;
       greetingName?: string;
     };
 
@@ -32,10 +31,9 @@ export function DashboardPageClient() {
     async function load() {
       try {
         const { access } = await verifyMagicLink(token as string);
-        const [progress, contributions, bankAccount, me] = await Promise.all([
+        const [progress, contributions, me] = await Promise.all([
           getProgressSummary(access),
           getContributions(access),
-          getBankAccount(access).catch(() => null),
           getMe(access).catch(() => null),
         ]);
         if (cancelled) return;
@@ -43,7 +41,6 @@ export function DashboardPageClient() {
           status: "ready",
           progress,
           contributions,
-          bankAccount,
           greetingName: me?.full_name || undefined,
         });
       } catch (error) {
@@ -80,7 +77,6 @@ export function DashboardPageClient() {
     <DashboardShell
       progress={state.progress}
       contributions={state.contributions}
-      bankAccount={state.bankAccount}
       greetingName={state.greetingName}
     />
   );
