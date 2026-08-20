@@ -13,7 +13,7 @@ from babasika.base_models import TimeStampedModel, UUIDPrimaryKeyModel
 # Clamped so onboarding/admin error can't produce a 0% or 100% split.
 MIN_EMERGENCY_RATIO = Decimal("0.10")
 MAX_EMERGENCY_RATIO = Decimal("0.50")
-DEFAULT_EMERGENCY_RATIO = Decimal("0.30")
+DEFAULT_EMERGENCY_RATIO = Decimal("0.40")
 
 DEFAULT_PENDING_ACTION_TTL_MINUTES = 15
 

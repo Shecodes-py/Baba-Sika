@@ -151,7 +151,7 @@ export const academyContent: Record<Language, AcademyContentSet> = {
     split: [
       {
         id: "why-40-60",
-        title: "Why the 40/60 split?",
+        title: "Why 40/60 dey important?",
         subtitle: "Balancing today safety with tomorrow security",
         body: "Every contribution wey you confirm, e dey split automatic: 40% dey go your Emergency money, wey you fit touch anytime you need am. 60% dey go your Retirement money, wey don register with your PFA for long term.",
       },

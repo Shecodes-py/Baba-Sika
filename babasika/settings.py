@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_celery_beat',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,6 +89,9 @@ WSGI_APPLICATION = 'babasika.wsgi.application'
 
 _database_url = env('DATABASE_URL', default='') or f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
 DATABASES = {'default': env.db_url_config(_database_url)}
+# Reuse connections across requests instead of reconnecting every time -
+# safe with Neon's pooled (PgBouncer) endpoint, harmless for sqlite.
+DATABASES['default']['CONN_MAX_AGE'] = env.int('DB_CONN_MAX_AGE', default=60)
 
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -219,3 +224,9 @@ TWILIO_WHATSAPP_NUMBER = env('TWILIO_WHATSAPP_NUMBER', default='')  # e.g. '+141
 # FLAG: placeholder until the deployed dashboard's real base URL is confirmed.
 
 DASHBOARD_BASE_URL = env('DASHBOARD_BASE_URL', default='https://dashboard.babasika.ng')
+
+# The dashboard (Frontend/) calls this API cross-origin from Vercel, so its
+# origin(s) must be listed here - comma-separated in .env, e.g.
+# CORS_ALLOWED_ORIGINS=https://your-dashboard.vercel.app,http://localhost:3000
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=['http://localhost:3000'])
+CORS_ALLOW_CREDENTIALS = False  # auth is via Bearer token (SimpleJWT), not cookies

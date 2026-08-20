@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from .models import Contribution
+
 
 class RetirementReadinessSerializer(serializers.Serializer):
     score = serializers.FloatField()
@@ -21,3 +23,10 @@ class ProgressSummarySerializer(serializers.Serializer):
     preferred_pfa = serializers.CharField(allow_blank=True)
     pfa_registration_status = serializers.CharField()
     rsa_pin = serializers.CharField(allow_blank=True)
+
+
+class ContributionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contribution
+        fields = ["id", "amount", "destination", "status", "executed_at", "created_at"]
+        read_only_fields = fields
