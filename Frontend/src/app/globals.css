@@ -1,29 +1,106 @@
 @import "tailwindcss";
 
-/* Fixed brand palette (not adaptive light/dark) - warm cream + deep green +
-   orange, matching the BabaSika brand look rather than a system-theme-driven
-   scheme. */
+/* Full warm sand / deep forest scales - not a 3-token palette. Matches the
+   real BabaSika design system (sand-*, forest-*, amber-*) rather than a
+   generic light/dark theme. Fixed palette, not adaptive to system theme. */
 :root {
-  --background: #faf3e3;
-  --surface: #fffbf3;
-  --foreground: #16261d;
-  --muted: #8a7f68;
-  --border: #e9dfc4;
+  --sand-50: #faf7f0;
+  --sand-100: #f5efe1;
+  --sand-200: #ebe1cb;
+  --sand-300: #ddcfae;
+  --sand-400: #c7b389;
+  --sand-500: #ad9569;
+  --sand-600: #8f7a52;
+  --sand-700: #6e5f42;
+  --sand-800: #574c38;
+  --sand-900: #453d2e;
+  --sand-950: #262119;
 
-  --brand: #16332a;
-  --brand-dark: #0d211a;
-  --brand-light: #e3ede7;
+  --forest-50: #eaf3ee;
+  --forest-100: #cfe6da;
+  --forest-200: #a0cdb6;
+  --forest-300: #6fae8f;
+  --forest-400: #48906e;
+  --forest-500: #2f7355;
+  --forest-600: #226047;
+  --forest-700: #1b4d3a;
+  --forest-800: #17402f;
+  --forest-900: #133326;
+  --forest-950: #0b1f17;
 
-  --accent: #f0a23d;
-  --accent-dark: #d1852a;
-  --accent-light: #fbead0;
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+  --amber-300: #fcd34d;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --amber-900: #78350f;
+  --amber-950: #451a03;
 
-  --success: #1f6d4c;
   --danger: #b3402f;
   --danger-light: #fbe7e2;
+
+  /* Semantic aliases used throughout components */
+  --background: var(--sand-50);
+  --surface: #ffffff;
+  --foreground: var(--sand-900);
+  --muted: var(--sand-600);
+  --border: var(--sand-200);
+
+  --brand: var(--forest-800);
+  --brand-dark: var(--forest-950);
+  --brand-light: var(--forest-100);
+
+  --accent: var(--amber-400);
+  --accent-dark: var(--amber-600);
+  --accent-light: var(--amber-100);
+
+  --success: var(--forest-600);
+
+  --shadow-warm: 0 10px 30px -10px rgb(23 64 47 / 0.18), 0 4px 10px -4px rgb(23 64 47 / 0.1);
+  --shadow-warm-lg: 0 30px 60px -15px rgb(23 64 47 / 0.3), 0 10px 20px -8px rgb(23 64 47 / 0.15);
 }
 
 @theme inline {
+  --color-sand-50: var(--sand-50);
+  --color-sand-100: var(--sand-100);
+  --color-sand-200: var(--sand-200);
+  --color-sand-300: var(--sand-300);
+  --color-sand-400: var(--sand-400);
+  --color-sand-500: var(--sand-500);
+  --color-sand-600: var(--sand-600);
+  --color-sand-700: var(--sand-700);
+  --color-sand-800: var(--sand-800);
+  --color-sand-900: var(--sand-900);
+  --color-sand-950: var(--sand-950);
+
+  --color-forest-50: var(--forest-50);
+  --color-forest-100: var(--forest-100);
+  --color-forest-200: var(--forest-200);
+  --color-forest-300: var(--forest-300);
+  --color-forest-400: var(--forest-400);
+  --color-forest-500: var(--forest-500);
+  --color-forest-600: var(--forest-600);
+  --color-forest-700: var(--forest-700);
+  --color-forest-800: var(--forest-800);
+  --color-forest-900: var(--forest-900);
+  --color-forest-950: var(--forest-950);
+
+  --color-amber-50: var(--amber-50);
+  --color-amber-100: var(--amber-100);
+  --color-amber-200: var(--amber-200);
+  --color-amber-300: var(--amber-300);
+  --color-amber-400: var(--amber-400);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: var(--amber-600);
+  --color-amber-700: var(--amber-700);
+  --color-amber-800: var(--amber-800);
+  --color-amber-900: var(--amber-900);
+  --color-amber-950: var(--amber-950);
+
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
@@ -38,7 +115,12 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
   --color-danger-light: var(--danger-light);
-  --font-sans: var(--font-geist-sans);
+
+  --shadow-warm: var(--shadow-warm);
+  --shadow-warm-lg: var(--shadow-warm-lg);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
 * {
@@ -48,5 +130,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }

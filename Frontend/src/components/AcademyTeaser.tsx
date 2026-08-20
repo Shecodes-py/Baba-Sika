@@ -7,16 +7,16 @@ export function AcademyTeaser() {
   const { t } = useLanguage();
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-16">
+    <section className="mx-auto max-w-6xl px-6 pb-20">
       <Link
         href="/academy"
-        className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-brand px-6 py-6 text-white transition-colors hover:bg-brand-dark sm:flex-row sm:px-10"
+        className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-gradient-to-br from-forest-900 to-forest-950 px-6 py-7 text-white shadow-warm transition-transform hover:scale-[1.01] sm:flex-row sm:px-10"
       >
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-accent">{t("academy.eyebrow")}</p>
-          <p className="mt-1 text-lg font-semibold">{t("academy.title")}</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-amber-400">{t("academy.eyebrow")}</p>
+          <p className="mt-1 font-display text-lg font-bold">{t("academy.title")}</p>
         </div>
-        <span className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-brand-dark">
+        <span className="rounded-2xl bg-amber-400 px-5 py-2.5 font-display text-sm font-extrabold text-forest-950">
           {t("nav.academy")} →
         </span>
       </Link>
